@@ -1,0 +1,29 @@
+{
+  "name": "subb98/vk-publisher",
+  "type": "library",
+  "description": "Auto-sending (crossposting) messages to VKontakte wall",
+  "keywords": ["vk", "vkontakte", "social", "wall", "post"],
+  "homepage": "https://github.com/Subb98/VK-Publisher",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Vladislav Subbotin",
+      "email": "subb98@gmail.com",
+      "role": "lead"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/Subb98/VK-Publisher/issues"
+  },
+  "autoload": {
+    "psr-4": {
+      "VkPublisher\\": "src/"
+    }
+  },
+  "require": {
+    "php": "7.*",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "vlucas/phpdotenv": "^2.5"
+  }
+}
