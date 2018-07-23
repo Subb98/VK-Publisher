@@ -10,12 +10,17 @@ namespace VkPublisher;
  */
 class PhotoValidator
 {
+    const MAX_FILE_SIZE = 50000000; // in kilobytes
+    const ALLOWED_EXTENSIONS = ['jpg', 'png', 'gif'];
+    const MAX_WIDTH_HEIGHT_SUM = 14000;
+    const MAX_WIDTH_HEIGHT_RATIO = 20;
+
     /**
      * Validates photo
      * 
      * @param string $file_name
      * @return void
-     * @todo add tests and constants
+     * @todo add tests
      */
     public static function validatePhoto(string $file_name): void
     {
@@ -27,14 +32,14 @@ class PhotoValidator
             throw new \Exception("File not found: {$file_name}");
         }
 
-        if (filesize($file_name) > 50000000) {
-            throw new \Exception("File size is more than 50 MB: {$file_name}");
+        if (filesize($file_name) > self::MAX_FILE_SIZE) {
+            throw new \Exception('File size is more than ' . self::MAX_FILE_SIZE / 1000000 . " MB: {$file_name}");
         }
 
         $file_parts = pathinfo($file_name);
         $file_extension = strtolower($file_parts['extension']);
 
-        if ($file_extension !== 'jpg' && $file_extension !== 'png' && $file_extension !== 'gif') {
+        if (!in_array($file_extension, self::ALLOWED_EXTENSIONS, true)) {
             throw new \Exception("Invalid file extension: {$file_extension}");
         }
 
@@ -47,14 +52,14 @@ class PhotoValidator
         $photo_width = $photo_sizes[0];
         $photo_height = $photo_sizes[1];
 
-        if ($photo_width + $photo_height > 14000) {
-            throw new \Exception("Photo width + height is more than 14000 px: {$file_name}");
+        if ($photo_width + $photo_height > self::MAX_WIDTH_HEIGHT_SUM) {
+            throw new \Exception('Photo width + height is more than ' . self::MAX_WIDTH_HEIGHT_SUM . " px: {$file_name}");
         }
 
         $ratio = $photo_width / $photo_height;
 
-        if ($ratio > 20.0) {
-            throw new \Exception("Invalid width to height ratio: 1:{$ratio}, need less than or equal to 1:20: {$file_name}");
+        if ($ratio > floatval(self::MAX_WIDTH_HEIGHT_RATIO)) {
+            throw new \Exception("Invalid width to height ratio: 1:{$ratio}, need less than or equal to 1:" . self::MAX_WIDTH_HEIGHT_RATIO . " {$file_name}");
         }
     }
 }
