@@ -6,7 +6,7 @@ use VkPublisher\PhotoValidator;
 
 /**
  * PhotoUploader Class
- * 
+ *
  * @author Vladislav Subbotin <subb98@gmail.com>
  * @version 0.1.0-dev
  */
@@ -14,7 +14,7 @@ class PhotoUploader
 {
     /**
      * Uploads photo to album
-     * 
+     *
      * @param string $file_name
      * @return string
      * @todo add exceptions and tests

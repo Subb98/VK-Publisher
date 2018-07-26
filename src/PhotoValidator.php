@@ -4,7 +4,7 @@ namespace VkPublisher;
 
 /**
  * PhotoValidator Class
- * 
+ *
  * @author Vladislav Subbotin <subb98@gmail.com>
  * @version 0.1.0-dev
  */
@@ -17,7 +17,7 @@ class PhotoValidator
 
     /**
      * Validates photo
-     * 
+     *
      * @param string $file_name
      * @return void
      * @todo add tests

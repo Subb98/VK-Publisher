@@ -4,7 +4,7 @@ namespace VkPublisher;
 
 /**
  * PostsSender Class
- * 
+ *
  * @author Vladislav Subbotin <subb98@gmail.com>
  * @version 0.1.0-dev
  */
@@ -12,12 +12,12 @@ class PostSender
 {
     /**
      * Sends message to wall
-     * 
+     *
      * @param string $message
      * @param array $attachments
-     * 
+     *
      * @return void
-     * 
+     *
      * @todo add exceptions, tests and prepare message
      */
     public static function sendPostToWall(string $message, array $attachments = []): void
