@@ -3,10 +3,10 @@
 namespace VkPublisher;
 
 /**
- * PhotoValidator Class
+ * Validates photo before uploading
  *
- * @author Vladislav Subbotin <subb98@gmail.com>
- * @version 0.1.0-dev
+ * @license MIT
+ * @package VkPublisher
  */
 class PhotoValidator
 {
