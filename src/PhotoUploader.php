@@ -13,6 +13,21 @@ use VkPublisher\PhotoValidator;
 class PhotoUploader
 {
     /**
+     * @var PhotoValidator
+     */
+    private $photo_validator;
+
+    /**
+     * Creates a new PhotoUploader instance
+     *
+     * @param PhotoValidator $photo_validator
+     */
+    public function __construct(PhotoValidator $photo_validator)
+    {
+        $this->photo_validator = $photo_validator;
+    }
+
+    /**
      * Uploads photo to album
      *
      * @param string $file_name
@@ -21,8 +36,7 @@ class PhotoUploader
      */
     public function uploadPhotoToAlbum(string $file_name): string
     {
-        $photo_validator = new PhotoValidator;
-        $photo_validator->validatePhoto($file_name);
+        $this->photo_validator->validatePhoto($file_name);
 
         $ch = curl_init('https://api.vk.com/method/photos.getUploadServer?');
         curl_setopt_array($ch, [
