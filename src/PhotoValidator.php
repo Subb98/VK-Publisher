@@ -53,13 +53,15 @@ class PhotoValidator
         $photo_height = $photo_sizes[1];
 
         if ($photo_width + $photo_height > self::MAX_WIDTH_HEIGHT_SUM) {
-            throw new \Exception('Photo width + height is more than ' . self::MAX_WIDTH_HEIGHT_SUM . " px: {$file_name}");
+            throw new \Exception('Photo width + height is more than '
+                . self::MAX_WIDTH_HEIGHT_SUM . " px: {$file_name}");
         }
 
         $ratio = $photo_width / $photo_height;
 
         if ($ratio > floatval(self::MAX_WIDTH_HEIGHT_RATIO)) {
-            throw new \Exception("Invalid width to height ratio: 1:{$ratio}, need less than or equal to 1:" . self::MAX_WIDTH_HEIGHT_RATIO . " {$file_name}");
+            throw new \Exception("Invalid width to height ratio: 1:{$ratio}, need less than or equal to 1:"
+                . self::MAX_WIDTH_HEIGHT_RATIO . " {$file_name}");
         }
     }
 }
