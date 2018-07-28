@@ -32,7 +32,7 @@ class PhotoUploader
      *
      * @param string $file_name
      * @return string
-     * @todo add exceptions and tests
+     * @todo add tests
      */
     public function uploadPhotoToAlbum(string $file_name): string
     {
@@ -51,9 +51,7 @@ class PhotoUploader
             ],
         ]);
 
-        $response = curl_exec($ch);
-        $response = json_decode($response, true);
-        curl_close($ch);
+        $response = $this->getResponse($ch);
 
         $ch = curl_init($response['response']['upload_url']);
         curl_setopt_array($ch, [
@@ -65,9 +63,7 @@ class PhotoUploader
             ],
         ]);
 
-        $response = curl_exec($ch);
-        $response = json_decode($response, true);
-        curl_close($ch);
+        $response = $this->getResponse($ch);
 
         $ch = curl_init('https://api.vk.com/method/photos.save?');
         curl_setopt_array($ch, [
@@ -85,10 +81,38 @@ class PhotoUploader
             ],
         ]);
 
-        $response = curl_exec($ch);
-        $response = json_decode($response, true);
-        curl_close($ch);
+        $response = $this->getResponse($ch);
 
         return "photo{$response['response'][0]['owner_id']}_{$response['response'][0]['id']}";
+    }
+
+    /**
+     * Gets cURL response
+     *
+     * @param \resource $ch
+     * @return array
+     */
+    private function getResponse($ch): array
+    {
+        if (!is_resource($ch)) {
+            throw new \InvalidArgumentException(
+                sprintf('Argument must be a valid resource type. %s given.', gettype($ch))
+            );
+        }
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        if (!$response) {
+            throw new \Exception('Request failed');
+        }
+
+        $response = json_decode($response, true);
+
+        if (isset($response['error'])) {
+            throw new \Exception("Error {$response['error']['error_code']}: {$response['error']['error_msg']}");
+        }
+
+        return $response;
     }
 }
