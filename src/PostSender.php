@@ -3,7 +3,7 @@
 namespace VkPublisher;
 
 /**
- * PostsSender Class
+ * PostSender Class
  *
  * @author Vladislav Subbotin <subb98@gmail.com>
  * @version 0.1.0-dev
@@ -16,11 +16,11 @@ class PostSender
      * @param string $message
      * @param array $attachments
      *
-     * @return void
+     * @return int
      *
-     * @todo add exceptions and tests
+     * @todo add tests
      */
-    public function sendPostToWall(string $message, array $attachments = []): void
+    public function sendPostToWall(string $message, array $attachments = []): int
     {
         $ch = curl_init('https://api.vk.com/method/wall.post?');
         curl_setopt_array($ch, [
@@ -46,7 +46,18 @@ class PostSender
         curl_setopt($ch, CURLOPT_POSTFIELDS, $opt_postfields);
 
         $response = curl_exec($ch);
-        $response = json_decode($response, true);
         curl_close($ch);
+
+        if (!$response) {
+            throw new \Exception('Request failed');
+        }
+
+        $response = json_decode($response, true);
+
+        if (isset($response['error'])) {
+            throw new \Exception("Error {$response['error']['error_code']}: {$response['error']['error_msg']}");
+        }
+
+        return $response['response']['post_id'];
     }
 }
