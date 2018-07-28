@@ -19,9 +19,10 @@ class PhotoUploader
      * @return string
      * @todo add exceptions and tests
      */
-    public static function uploadPhotoToAlbum(string $file_name): string
+    public function uploadPhotoToAlbum(string $file_name): string
     {
-        PhotoValidator::validatePhoto($file_name);
+        $photo_validator = new PhotoValidator;
+        $photo_validator->validatePhoto($file_name);
 
         $ch = curl_init('https://api.vk.com/method/photos.getUploadServer?');
         curl_setopt_array($ch, [

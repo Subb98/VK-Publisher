@@ -22,7 +22,7 @@ class PhotoValidator
      * @return void
      * @todo add tests
      */
-    public static function validatePhoto(string $file_name): void
+    public function validatePhoto(string $file_name): void
     {
         if (!$file_name) {
             throw new \Exception('File name is missing');

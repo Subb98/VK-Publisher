@@ -8,5 +8,8 @@ $dotenv->load();
 use VkPublisher\PhotoUploader;
 use VkPublisher\PostSender;
 
-$photo_uri = PhotoUploader::uploadPhotoToAlbum(__DIR__ . '/img/peter-as-superman.jpg');
-PostSender::sendPostToWall('Message sends by "VK Publisher" PHP library', [$photo_uri]);
+$photo_uploader = new PhotoUploader;
+$post_sender = new PostSender;
+
+$photo_uri = $photo_uploader->uploadPhotoToAlbum(__DIR__ . '/img/peter-as-superman.jpg');
+$post_sender->sendPostToWall('Message sends by "VK Publisher" PHP library', [$photo_uri]);

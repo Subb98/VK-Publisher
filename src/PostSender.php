@@ -18,9 +18,9 @@ class PostSender
      *
      * @return void
      *
-     * @todo add exceptions, tests and prepare message
+     * @todo add exceptions and tests
      */
-    public static function sendPostToWall(string $message, array $attachments = []): void
+    public function sendPostToWall(string $message, array $attachments = []): void
     {
         $ch = curl_init('https://api.vk.com/method/wall.post?');
         curl_setopt_array($ch, [
