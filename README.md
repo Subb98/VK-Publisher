@@ -1,6 +1,7 @@
 # VK Publisher
 PHP library for auto-sending (crossposting) messages to VKontakte wall
 
+[![Build Status](https://travis-ci.org/Subb98/VK-Publisher.svg?branch=master)](https://travis-ci.org/Subb98/VK-Publisher)
 [![StyleCI](https://styleci.io/repos/141911023/shield)](https://styleci.io/repos/141911023)
 [![Latest Stable Version](https://poser.pugx.org/subb98/vk-publisher/v/stable)](https://packagist.org/packages/subb98/vk-publisher)
 [![Total Downloads](https://poser.pugx.org/subb98/vk-publisher/downloads)](https://packagist.org/packages/subb98/vk-publisher)
