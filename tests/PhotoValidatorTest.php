@@ -24,7 +24,7 @@ class PhotoValidatorTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        $file = fopen(self::IMG_PATH . '/test.jpg', 'w');
+        $file = fopen(self::IMG_PATH . '/invalid-file-size.jpg', 'w');
         fseek($file, 50000000, SEEK_CUR);
         fwrite($file, '0');
         fclose($file);
@@ -32,7 +32,7 @@ class PhotoValidatorTest extends TestCase
 
     public static function tearDownAfterClass()
     {
-        unlink(self::IMG_PATH . '/test.jpg');
+        unlink(self::IMG_PATH . '/invalid-file-size.jpg');
     }
 
     public function testFileNameIsMissing()
@@ -50,7 +50,7 @@ class PhotoValidatorTest extends TestCase
     public function testFileSizeIsMoreThan()
     {
         $this->expectExceptionMessage('File size is more than');
-        $this->photo_validator->validatePhoto(self::IMG_PATH . '/test.jpg');
+        $this->photo_validator->validatePhoto(self::IMG_PATH . '/invalid-file-size.jpg');
     }
 
     public function testFileExtensionIsInvalid()
