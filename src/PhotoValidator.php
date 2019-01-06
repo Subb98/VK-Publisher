@@ -2,13 +2,15 @@
 
 namespace VkPublisher;
 
+use VkPublisher\Interfaces\ValidatorInterface;
+
 /**
  * Validates photo before uploading
  *
  * @license MIT
  * @package VkPublisher
  */
-class PhotoValidator
+class PhotoValidator implements ValidatorInterface
 {
     const MAX_FILE_SIZE = 50000000; // in kilobytes
     const ALLOWED_EXTENSIONS = ['jpg', 'png', 'gif'];
@@ -18,9 +20,9 @@ class PhotoValidator
     /**
      * Validates photo
      *
-     * @param string $file_name
+     * @param string $file_name Absolute path to photo
+     * @throws \Exception if any check fails
      * @return void
-     * @todo add tests
      */
     public function validatePhoto(string $file_name): void
     {
@@ -28,8 +30,8 @@ class PhotoValidator
             throw new \Exception('File name is missing');
         }
 
-        if (!file_exists($file_name)) {
-            throw new \Exception("File not found: {$file_name}");
+        if (!is_file($file_name)) {
+            throw new \Exception("File not found or invalid: {$file_name}");
         }
 
         if (filesize($file_name) > self::MAX_FILE_SIZE) {
