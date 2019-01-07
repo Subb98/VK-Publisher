@@ -2,6 +2,7 @@
 
 namespace VkPublisher;
 
+use VkPublisher\Interfaces\SettingsInterface;
 use VkPublisher\Traits\HttpTrait;
 
 /**
@@ -13,6 +14,21 @@ use VkPublisher\Traits\HttpTrait;
 class PostSender
 {
     use HttpTrait;
+
+    /**
+     * @var SettingsInterface
+     */
+    private $settings;
+
+    /**
+     * Creates a new PostSender instance
+     *
+     * @param SettingsInterface $settings
+     */
+    public function __construct(SettingsInterface $settings)
+    {
+        $this->settings = $settings;
+    }
 
     /**
      * Sends message to wall
@@ -30,11 +46,11 @@ class PostSender
         }
 
         $params = [
-            'owner_id'      => '-'.$_ENV['VK_PUBLISHER_GROUP_ID'],
+            'owner_id'      => '-'.$this->settings->getGroupId(),
             'from_group'    => 1,
             'message'       => $message,
-            'access_token'  => $_ENV['VK_PUBLISHER_ACCESS_TOKEN'],
-            'v'             => $_ENV['VK_PUBLISHER_API_VERSION'],
+            'access_token'  => $this->settings->getAccessToken(),
+            'v'             => $this->settings->getApiVersion(),
         ];
 
         if ($attachments) {

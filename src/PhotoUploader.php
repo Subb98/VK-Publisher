@@ -2,7 +2,8 @@
 
 namespace VkPublisher;
 
-use VkPublisher\PhotoValidator;
+use VkPublisher\Interfaces\SettingsInterface;
+use VkPublisher\Interfaces\ValidatorInterface;
 use VkPublisher\Traits\HttpTrait;
 
 /**
@@ -16,17 +17,24 @@ class PhotoUploader
     use HttpTrait;
 
     /**
-     * @var PhotoValidator
+     * @var SettingsInterface
+     */
+    private $settings;
+
+    /**
+     * @var ValidatorInterface
      */
     private $photo_validator;
 
     /**
      * Creates a new PhotoUploader instance
      *
-     * @param PhotoValidator $photo_validator
+     * @param SettingsInterface $settings
+     * @param ValidatorInterface $photo_validator
      */
-    public function __construct(PhotoValidator $photo_validator)
+    public function __construct(SettingsInterface $settings, ValidatorInterface $photo_validator)
     {
+        $this->settings = $settings;
         $this->photo_validator = $photo_validator;
     }
 
@@ -42,10 +50,10 @@ class PhotoUploader
         $this->photo_validator->validatePhoto($file_name);
 
         $response = $this->httpRequest('https://api.vk.com/method/photos.getUploadServer?', [
-            'album_id'      => $_ENV['VK_PUBLISHER_ALBUM_ID'],
-            'group_id'      => $_ENV['VK_PUBLISHER_GROUP_ID'],
-            'access_token'  => $_ENV['VK_PUBLISHER_ACCESS_TOKEN'],
-            'v'             => $_ENV['VK_PUBLISHER_API_VERSION'],
+            'album_id'      => $this->settings->getAlbumId(),
+            'group_id'      => $this->settings->getGroupId(),
+            'access_token'  => $this->settings->getAccessToken(),
+            'v'             => $this->settings->getApiVersion(),
         ]);
 
         $response = $this->httpRequest($response['response']['upload_url'], [
@@ -58,8 +66,8 @@ class PhotoUploader
             'group_id'      => $response['gid'],
             'album_id'      => $response['aid'],
             'hash'          => $response['hash'],
-            'access_token'  => $_ENV['VK_PUBLISHER_ACCESS_TOKEN'],
-            'v'             => $_ENV['VK_PUBLISHER_API_VERSION'],
+            'access_token'  => $this->settings->getAccessToken(),
+            'v'             => $this->settings->getApiVersion(),
         ]);
 
         return "photo{$response['response'][0]['owner_id']}_{$response['response'][0]['id']}";

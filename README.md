@@ -15,7 +15,6 @@ PHP library for auto-sending (crossposting) messages to VKontakte wall
 - PHP 7.1 or above
 - [cURL extension](http://php.net/manual/en/curl.installation.php)
 - [JSON extension](http://php.net/manual/en/json.installation.php)
-- [PHP Dotenv](https://github.com/vlucas/phpdotenv)
 
 ## Installation
 
