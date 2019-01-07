@@ -23,9 +23,9 @@ trait HttpTrait
 
         $ch = curl_init($url);
 
-        $curl_options['CURLOPT_RETURNTRANSFER'] = true;
-        $curl_options['CURLOPT_SSL_VERIFYPEER'] = false;
-        $curl_options['CURLOPT_SSL_VERIFYHOST'] = false;
+        $curl_options[CURLOPT_RETURNTRANSFER] = true;
+        $curl_options[CURLOPT_SSL_VERIFYPEER] = false;
+        $curl_options[CURLOPT_SSL_VERIFYHOST] = false;
 
         curl_setopt_array($ch, $curl_options);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
