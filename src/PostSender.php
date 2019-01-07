@@ -2,6 +2,8 @@
 
 namespace VkPublisher;
 
+use VkPublisher\Traits\HttpTrait;
+
 /**
  * Sends messages to wall
  *
@@ -10,27 +12,24 @@ namespace VkPublisher;
  */
 class PostSender
 {
+    use HttpTrait;
+
     /**
      * Sends message to wall
      *
-     * @param string $message
-     * @param array $attachments
-     *
+     * @param string $message Message that will be sent to the wall
+     * @param array $attachments Photos that will be post on the wall
+     * @throws \InvalidArgumentException if $message and $attachments are empty
      * @return int
-     *
      * @todo add tests
      */
     public function sendPostToWall(string $message, array $attachments = []): int
     {
-        $ch = curl_init('https://api.vk.com/method/wall.post?');
-        curl_setopt_array($ch, [
-            CURLOPT_POST => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
-        ]);
+        if (trim($message) === '' && empty($attachments)) {
+            throw new \InvalidArgumentException('Argument "$message" or "$attachments" should not be empty.');
+        }
 
-        $opt_postfields = [
+        $params = [
             'owner_id'      => '-'.$_ENV['VK_PUBLISHER_GROUP_ID'],
             'from_group'    => 1,
             'message'       => $message,
@@ -40,23 +39,10 @@ class PostSender
 
         if ($attachments) {
             $attachments = implode(',', $attachments);
-            $opt_postfields['attachments'] = $attachments;
+            $params['attachments'] = $attachments;
         }
 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $opt_postfields);
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        if (!$response) {
-            throw new \Exception('Request failed');
-        }
-
-        $response = json_decode($response, true);
-
-        if (isset($response['error'])) {
-            throw new \Exception("Error {$response['error']['error_code']}: {$response['error']['error_msg']}");
-        }
+        $response = $this->httpRequest('https://api.vk.com/method/wall.post?', $params);
 
         return $response['response']['post_id'];
     }
