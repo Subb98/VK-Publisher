@@ -10,16 +10,16 @@ class PhotoValidatorTest extends TestCase
 {
     const IMG_PATH = __DIR__ . '/fixtures/img';
 
-    private $photo_validator;
+    private $photoValidator;
 
     public function setUp()
     {
-        $this->photo_validator = new PhotoValidator;
+        $this->photoValidator = new PhotoValidator;
     }
 
     public function tearDown()
     {
-        $this->photo_validator = null;
+        $this->photoValidator = null;
     }
 
     public static function setUpBeforeClass()
@@ -35,50 +35,50 @@ class PhotoValidatorTest extends TestCase
         unlink(self::IMG_PATH . '/invalid-file-size.jpg');
     }
 
-    public function testFileNameIsMissing()
+    public function testPathToPhotoIsMissing()
     {
-        $this->expectExceptionMessage('File name is missing');
-        $this->photo_validator->validatePhoto('');
+        $this->expectExceptionMessage('Param $pathToPhoto is missing');
+        $this->photoValidator->validate('');
     }
 
     public function testFileNotFound()
     {
         $this->expectExceptionMessage('File not found');
-        $this->photo_validator->validatePhoto('invisible.png');
+        $this->photoValidator->validate('invisible.png');
     }
 
     public function testFileSizeIsMoreThan()
     {
         $this->expectExceptionMessage('File size is more than');
-        $this->photo_validator->validatePhoto(self::IMG_PATH . '/invalid-file-size.jpg');
+        $this->photoValidator->validate(self::IMG_PATH . '/invalid-file-size.jpg');
     }
 
     public function testFileExtensionIsInvalid()
     {
         $this->expectExceptionMessage('Invalid file extension');
-        $this->photo_validator->validatePhoto(self::IMG_PATH . '/invalid-extension.bmp');
+        $this->photoValidator->validate(self::IMG_PATH . '/invalid-extension.bmp');
     }
 
     public function testCantGetPhotoSize()
     {
         $this->expectExceptionMessage("Can't get photo size: invalid file");
-        $this->photo_validator->validatePhoto(self::IMG_PATH . '/invalid-file.gif');
+        $this->photoValidator->validate(self::IMG_PATH . '/invalid-file.gif');
     }
 
     public function testWidthHeightSumIsMoreThan()
     {
         $this->expectExceptionMessage('Photo width + height is more than');
-        $this->photo_validator->validatePhoto(self::IMG_PATH . '/invalid-width-height-sum.jpg');
+        $this->photoValidator->validate(self::IMG_PATH . '/invalid-width-height-sum.jpg');
     }
 
     public function testWidthHeightRatioIsInvalid()
     {
         $this->expectExceptionMessage('Invalid width to height ratio');
-        $this->photo_validator->validatePhoto(self::IMG_PATH . '/invalid-width-height-ratio.jpg');
+        $this->photoValidator->validate(self::IMG_PATH . '/invalid-width-height-ratio.jpg');
     }
 
     public function testImageIsValid()
     {
-        $this->assertEmpty($this->photo_validator->validatePhoto(self::IMG_PATH . '/valid-image.jpg'));
+        $this->assertEmpty($this->photoValidator->validate(self::IMG_PATH . '/valid-image.jpg'));
     }
 }

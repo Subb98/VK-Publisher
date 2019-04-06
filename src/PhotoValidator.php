@@ -2,7 +2,7 @@
 
 namespace Subb98\VkPublisher;
 
-use Subb98\VkPublisher\Interfaces\ValidatorInterface;
+use Subb98\VkPublisher\Interfaces\PhotoValidatorInterface;
 
 /**
  * Validates photo before uploading
@@ -10,7 +10,7 @@ use Subb98\VkPublisher\Interfaces\ValidatorInterface;
  * @license MIT
  * @package Subb98\VkPublisher
  */
-class PhotoValidator implements ValidatorInterface
+class PhotoValidator implements PhotoValidatorInterface
 {
     const MAX_FILE_SIZE = 50000000; // in kilobytes
     const ALLOWED_EXTENSIONS = ['jpg', 'png', 'gif'];
@@ -20,50 +20,52 @@ class PhotoValidator implements ValidatorInterface
     /**
      * Validates photo
      *
-     * @param string $file_name Absolute path to photo
-     * @throws \Exception if any check fails
+     * @param string $pathToPhoto Absolute path to photo
+     * @throws \InvalidArgumentException if $pathToPhoto is missing
+     * @throws \RuntimeException if any other check fails
      * @return void
      */
-    public function validatePhoto(string $file_name): void
+    public function validate(string $pathToPhoto): void
     {
-        if (!$file_name) {
-            throw new \Exception('File name is missing');
+        if (!$pathToPhoto) {
+            throw new \InvalidArgumentException('Param $pathToPhoto is missing');
         }
 
-        if (!is_file($file_name)) {
-            throw new \Exception("File not found or invalid: {$file_name}");
+        if (!is_file($pathToPhoto)) {
+            throw new \RuntimeException("File not found or invalid: {$pathToPhoto}");
         }
 
-        if (filesize($file_name) > self::MAX_FILE_SIZE) {
-            throw new \Exception('File size is more than ' . self::MAX_FILE_SIZE / 1000000 . " MB: {$file_name}");
+        if (filesize($pathToPhoto) > self::MAX_FILE_SIZE) {
+            throw new \RuntimeException('File size is more than '
+                . self::MAX_FILE_SIZE / 1000000 . " MB: {$pathToPhoto}");
         }
 
-        $file_parts = pathinfo($file_name);
-        $file_extension = strtolower($file_parts['extension']);
+        $fileParts = pathinfo($pathToPhoto);
+        $fileExtension = strtolower($fileParts['extension']);
 
-        if (!in_array($file_extension, self::ALLOWED_EXTENSIONS, true)) {
-            throw new \Exception("Invalid file extension: {$file_extension}");
+        if (!in_array($fileExtension, self::ALLOWED_EXTENSIONS, true)) {
+            throw new \RuntimeException("Invalid file extension: {$fileExtension}");
         }
 
-        $photo_sizes = getimagesize($file_name);
+        $photoSizes = getimagesize($pathToPhoto);
 
-        if (!$photo_sizes) {
-            throw new \Exception("Can't get photo size: invalid file: {$file_name}");
+        if (!$photoSizes) {
+            throw new \RuntimeException("Can't get photo size: invalid file: {$pathToPhoto}");
         }
 
-        $photo_width = $photo_sizes[0];
-        $photo_height = $photo_sizes[1];
+        $photoWidth = $photoSizes[0];
+        $photoHeight = $photoSizes[1];
 
-        if ($photo_width + $photo_height > self::MAX_WIDTH_HEIGHT_SUM) {
-            throw new \Exception('Photo width + height is more than '
-                . self::MAX_WIDTH_HEIGHT_SUM . " px: {$file_name}");
+        if ($photoWidth + $photoHeight > self::MAX_WIDTH_HEIGHT_SUM) {
+            throw new \RuntimeException('Photo width + height is more than '
+                . self::MAX_WIDTH_HEIGHT_SUM . " px: {$pathToPhoto}");
         }
 
-        $ratio = $photo_width / $photo_height;
+        $ratio = $photoWidth / $photoHeight;
 
         if ($ratio > floatval(self::MAX_WIDTH_HEIGHT_RATIO)) {
-            throw new \Exception("Invalid width to height ratio: 1:{$ratio}, need less than or equal to 1:"
-                . self::MAX_WIDTH_HEIGHT_RATIO . " {$file_name}");
+            throw new \RuntimeException("Invalid width to height ratio: 1:{$ratio}, need less than or equal to 1:"
+                . self::MAX_WIDTH_HEIGHT_RATIO . " {$pathToPhoto}");
         }
     }
 }
