@@ -3,7 +3,8 @@
 namespace Subb98\VkPublisher;
 
 use Subb98\VkPublisher\Interfaces\SettingsInterface;
-use Subb98\VkPublisher\Interfaces\ValidatorInterface;
+use Subb98\VkPublisher\Interfaces\PhotoValidatorInterface;
+use Subb98\VkPublisher\Interfaces\PhotoUploaderInterface;
 use Subb98\VkPublisher\Traits\HttpTrait;
 
 /**
@@ -12,42 +13,37 @@ use Subb98\VkPublisher\Traits\HttpTrait;
  * @license MIT
  * @package Subb98\VkPublisher
  */
-class PhotoUploader
+class PhotoUploader implements PhotoUploaderInterface
 {
     use HttpTrait;
 
-    /**
-     * @var SettingsInterface
-     */
+    /** @var SettingsInterface */
     private $settings;
 
-    /**
-     * @var ValidatorInterface
-     */
-    private $photo_validator;
+    /** @var PhotoValidatorInterface */
+    private $photoValidator;
 
     /**
      * Creates a new PhotoUploader instance
      *
      * @param SettingsInterface $settings
-     * @param ValidatorInterface $photo_validator
+     * @param PhotoValidatorInterface $photoValidator
      */
-    public function __construct(SettingsInterface $settings, ValidatorInterface $photo_validator)
+    public function __construct(SettingsInterface $settings, PhotoValidatorInterface $photoValidator)
     {
         $this->settings = $settings;
-        $this->photo_validator = $photo_validator;
+        $this->photoValidator = $photoValidator;
     }
 
     /**
      * Uploads photo to album
      *
-     * @param string $file_name Absolute path to photo
+     * @param string $pathToPhoto Absolute path to photo
      * @return string
-     * @todo add tests
      */
-    public function uploadPhotoToAlbum(string $file_name): string
+    public function uploadPhotoToAlbum(string $pathToPhoto): string
     {
-        $this->photo_validator->validatePhoto($file_name);
+        $this->photoValidator->validate($pathToPhoto);
 
         $response = $this->httpRequest('https://api.vk.com/method/photos.getUploadServer?', [
             'album_id'      => $this->settings->getAlbumId(),
@@ -57,7 +53,7 @@ class PhotoUploader
         ]);
 
         $response = $this->httpRequest($response['response']['upload_url'], [
-            'file1' => new \CURLFile($file_name),
+            'file1' => new \CURLFile($pathToPhoto),
         ]);
 
         $response = $this->httpRequest('https://api.vk.com/method/photos.save?', [
