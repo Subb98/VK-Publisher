@@ -12,119 +12,103 @@ use Subb98\VkPublisher\Interfaces\SettingsInterface;
  */
 class Settings implements SettingsInterface
 {
-    /**
-     * Community index
-     *
-     * @var int
-     */
-    private $group_id;
+    /** @var int Community index */
+    private $groupId;
+
+    /** @var int Photo album index */
+    private $albumId;
+
+    /** @var string User access token */
+    private $accessToken;
+
+    /** @var string Version of VKontakte API */
+    private $apiVersion;
 
     /**
-     * Photo album index
-     *
-     * @var int
-     */
-    private $album_id;
-
-    /**
-     * Community access token
-     *
-     * @var string
-     */
-    private $access_token;
-
-    /**
-     * API version
-     *
-     * @var string
-     */
-    private $api_version;
-
-    /**
-     * Gets the value of group_id
+     * Gets the value of groupId
      *
      * @return integer|null
      */
     public function getGroupId(): ?int
     {
-        return $this->group_id;
+        return $this->groupId;
     }
 
     /**
-     * Sets the value of group_id
+     * Sets the value of groupId
      *
-     * @param integer $group_id
+     * @param integer $groupId Community index
      * @return self
      */
-    public function setGroupId(int $group_id): self
+    public function setGroupId(int $groupId): self
     {
-        $this->group_id = $group_id;
+        $this->groupId = $groupId;
         return $this;
     }
 
     /**
-     * Gets the value of album_id
+     * Gets the value of albumId
      *
      * @return integer|null
      */
     public function getAlbumId(): ?int
     {
-        return $this->album_id;
+        return $this->albumId;
     }
 
     /**
-     * Sets the value of album_id
+     * Sets the value of albumId
      *
-     * @param integer $album_id
+     * @param integer $albumId Photo album index
      * @return self
      */
-    public function setAlbumId(int $album_id): self
+    public function setAlbumId(int $albumId): self
     {
-        $this->album_id = $album_id;
+        $this->albumId = $albumId;
         return $this;
     }
 
     /**
-     * Gets the value of access_token
+     * Gets the value of accessToken
      *
      * @return string|null
      */
     public function getAccessToken(): ?string
     {
-        return $this->access_token;
+        return $this->accessToken;
     }
 
     /**
-     * Sets the value of access_token
+     * Sets the value of accessToken
      *
-     * @param string $access_token
+     * @param string $accessToken User access token
      * @return self
      */
-    public function setAccessToken(string $access_token): self
+    public function setAccessToken(string $accessToken): self
     {
-        $this->access_token = $access_token;
+        $this->accessToken = $accessToken;
         return $this;
     }
 
     /**
-     * Gets the value of api_version
+     * Gets the value of apiVersion
      *
      * @return string|null
      */
     public function getApiVersion(): ?string
     {
-        return $this->api_version;
+        return $this->apiVersion;
     }
 
     /**
-     * Sets the value of api_version
+     * Sets the value of apiVersion
      *
-     * @param string $api_version
+     * @param string $apiVersion Version of VKontakte API
      * @return self
      */
-    public function setApiVersion(string $api_version): self
+    public function setApiVersion(string $apiVersion): self
     {
-        $this->api_version = $api_version;
+        $this->apiVersion = $apiVersion;
         return $this;
     }
 }

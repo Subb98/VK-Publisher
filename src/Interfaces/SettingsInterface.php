@@ -5,62 +5,62 @@ namespace Subb98\VkPublisher\Interfaces;
 interface SettingsInterface
 {
     /**
-     * Gets the value of group_id
+     * Gets the value of groupId
      *
      * @return integer|null
      */
     public function getGroupId(): ?int;
 
     /**
-     * Sets the value of group_id
+     * Sets the value of groupId
      *
-     * @param integer $group_id
+     * @param integer $groupId Community index
      * @return self
      */
-    public function setGroupId(int $group_id);
+    public function setGroupId(int $groupId);
 
     /**
-     * Gets the value of album_id
+     * Gets the value of albumId
      *
      * @return integer|null
      */
     public function getAlbumId(): ?int;
 
     /**
-     * Sets the value of album_id
+     * Sets the value of albumId
      *
-     * @param integer $album_id
+     * @param integer $albumId Photo album index
      * @return self
      */
-    public function setAlbumId(int $album_id);
+    public function setAlbumId(int $albumId);
 
     /**
-     * Gets the value of access_token
+     * Gets the value of accessToken
      *
      * @return string|null
      */
     public function getAccessToken(): ?string;
 
     /**
-     * Sets the value of access_token
+     * Sets the value of accessToken
      *
-     * @param string $access_token
+     * @param string $accessToken User access token
      * @return self
      */
-    public function setAccessToken(string $access_token);
+    public function setAccessToken(string $accessToken);
 
     /**
-     * Gets the value of api_version
+     * Gets the value of apiVersion
      *
      * @return string|null
      */
     public function getApiVersion(): ?string;
 
     /**
-     * Sets the value of api_version
+     * Sets the value of apiVersion
      *
-     * @param string $api_version
+     * @param string $apiVersion Version of VKontakte API
      * @return self
      */
-    public function setApiVersion(string $api_version);
+    public function setApiVersion(string $apiVersion);
 }
