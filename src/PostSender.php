@@ -3,6 +3,7 @@
 namespace Subb98\VkPublisher;
 
 use Subb98\VkPublisher\Interfaces\SettingsInterface;
+use Subb98\VkPublisher\Interfaces\PostSenderInterface;
 use Subb98\VkPublisher\Traits\HttpTrait;
 
 /**
@@ -11,13 +12,11 @@ use Subb98\VkPublisher\Traits\HttpTrait;
  * @license MIT
  * @package Subb98\VkPublisher
  */
-class PostSender
+class PostSender implements PostSenderInterface
 {
     use HttpTrait;
 
-    /**
-     * @var SettingsInterface
-     */
+    /** @var SettingsInterface */
     private $settings;
 
     /**
@@ -37,7 +36,6 @@ class PostSender
      * @param array $attachments Photos that will be post on the wall
      * @throws \InvalidArgumentException if $message and $attachments are empty
      * @return int
-     * @todo add tests
      */
     public function sendPostToWall(string $message, array $attachments = []): int
     {
