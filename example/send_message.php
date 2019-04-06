@@ -2,10 +2,10 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use VkPublisher\Settings;
-use VkPublisher\PhotoValidator;
-use VkPublisher\PhotoUploader;
-use VkPublisher\PostSender;
+use Subb98\VkPublisher\Settings;
+use Subb98\VkPublisher\PhotoValidator;
+use Subb98\VkPublisher\PhotoUploader;
+use Subb98\VkPublisher\PostSender;
 
 $settings = new Settings;
 $settings->setGroupId(169116756);

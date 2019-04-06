@@ -1,6 +1,6 @@
 <?php
 
-namespace VkPublisher\Traits;
+namespace Subb98\VkPublisher\Traits;
 
 trait HttpTrait
 {

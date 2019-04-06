@@ -1,6 +1,6 @@
 <?php
 
-namespace VkPublisher\Interfaces;
+namespace Subb98\VkPublisher\Interfaces;
 
 interface ValidatorInterface
 {

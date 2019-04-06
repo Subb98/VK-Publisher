@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace VkPublisher\Tests;
+namespace Subb98\VkPublisher\Tests;
 
 use PHPUnit\Framework\TestCase;
-use VkPublisher\PhotoValidator;
+use Subb98\VkPublisher\PhotoValidator;
 
 class PhotoValidatorTest extends TestCase
 {
@@ -16,7 +16,7 @@ class PhotoValidatorTest extends TestCase
     {
         $this->photo_validator = new PhotoValidator;
     }
- 
+
     public function tearDown()
     {
         $this->photo_validator = null;

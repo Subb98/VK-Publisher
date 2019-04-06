@@ -1,16 +1,16 @@
 <?php
 
-namespace VkPublisher;
+namespace Subb98\VkPublisher;
 
-use VkPublisher\Interfaces\SettingsInterface;
-use VkPublisher\Interfaces\ValidatorInterface;
-use VkPublisher\Traits\HttpTrait;
+use Subb98\VkPublisher\Interfaces\SettingsInterface;
+use Subb98\VkPublisher\Interfaces\ValidatorInterface;
+use Subb98\VkPublisher\Traits\HttpTrait;
 
 /**
  * Uploads photos
  *
  * @license MIT
- * @package VkPublisher
+ * @package Subb98\VkPublisher
  */
 class PhotoUploader
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace VkPublisher;
+namespace Subb98\VkPublisher;
 
-use VkPublisher\Interfaces\SettingsInterface;
-use VkPublisher\Traits\HttpTrait;
+use Subb98\VkPublisher\Interfaces\SettingsInterface;
+use Subb98\VkPublisher\Traits\HttpTrait;
 
 /**
  * Sends messages to wall
  *
  * @license MIT
- * @package VkPublisher
+ * @package Subb98\VkPublisher
  */
 class PostSender
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace VkPublisher;
+namespace Subb98\VkPublisher;
 
-use VkPublisher\Interfaces\ValidatorInterface;
+use Subb98\VkPublisher\Interfaces\ValidatorInterface;
 
 /**
  * Validates photo before uploading
  *
  * @license MIT
- * @package VkPublisher
+ * @package Subb98\VkPublisher
  */
 class PhotoValidator implements ValidatorInterface
 {

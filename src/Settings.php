@@ -1,9 +1,15 @@
 <?php
 
-namespace VkPublisher;
+namespace Subb98\VkPublisher;
 
-use VkPublisher\Interfaces\SettingsInterface;
+use Subb98\VkPublisher\Interfaces\SettingsInterface;
 
+/**
+ * Manages settings
+ *
+ * @license MIT
+ * @package Subb98\VkPublisher
+ */
 class Settings implements SettingsInterface
 {
     /**
