@@ -9,11 +9,11 @@ trait HttpTrait
      *
      * @param string $url URL
      * @param array $params Request parameters (CURLOPT_POSTFIELDS)
-     * @param array $curl_options cURL options (CURLOPT_* array)
+     * @param array $curlOptions cURL options (CURLOPT_* array)
      * @throws \InvalidArgumentException if $url param is not a valid URL
      * @return array
      */
-    protected function httpRequest(string $url, array $params = [], array $curl_options = []): array
+    protected function httpRequest(string $url, array $params = [], array $curlOptions = []): array
     {
         if (filter_var($url, FILTER_VALIDATE_URL) === false) {
             throw new \InvalidArgumentException(
@@ -23,19 +23,19 @@ trait HttpTrait
 
         $ch = curl_init($url);
 
-        if (!array_key_exists(CURLOPT_RETURNTRANSFER, $curl_options)) {
-            $curl_options[CURLOPT_RETURNTRANSFER] = true;
+        if (!array_key_exists(CURLOPT_RETURNTRANSFER, $curlOptions)) {
+            $curlOptions[CURLOPT_RETURNTRANSFER] = true;
         }
 
-        if (!array_key_exists(CURLOPT_SSL_VERIFYPEER, $curl_options)) {
-            $curl_options[CURLOPT_SSL_VERIFYPEER] = false;
+        if (!array_key_exists(CURLOPT_SSL_VERIFYPEER, $curlOptions)) {
+            $curlOptions[CURLOPT_SSL_VERIFYPEER] = false;
         }
 
-        if (!array_key_exists(CURLOPT_SSL_VERIFYHOST, $curl_options)) {
-            $curl_options[CURLOPT_SSL_VERIFYHOST] = false;
+        if (!array_key_exists(CURLOPT_SSL_VERIFYHOST, $curlOptions)) {
+            $curlOptions[CURLOPT_SSL_VERIFYHOST] = false;
         }
 
-        curl_setopt_array($ch, $curl_options);
+        curl_setopt_array($ch, $curlOptions);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 
         $response = $this->getResponse($ch);
@@ -49,7 +49,7 @@ trait HttpTrait
      *
      * @param \resource $ch
      * @throws \InvalidArgumentException if $ch param is not a resource
-     * @throws \Exception if request failed
+     * @throws \RuntimeException if request failed
      * @return array
      */
     protected function getResponse($ch): array
@@ -63,13 +63,13 @@ trait HttpTrait
         $response = curl_exec($ch);
 
         if (!$response) {
-            throw new \Exception('Request failed');
+            throw new \RuntimeException('Request failed');
         }
 
         $response = json_decode($response, true);
 
         if (isset($response['error'])) {
-            throw new \Exception("Error {$response['error']['error_code']}: {$response['error']['error_msg']}");
+            throw new \RuntimeException("Error {$response['error']['error_code']}: {$response['error']['error_msg']}");
         }
 
         return $response;
