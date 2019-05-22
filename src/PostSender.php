@@ -7,22 +7,24 @@ use Subb98\VkPublisher\Interfaces\PostSenderInterface;
 use Subb98\VkPublisher\Traits\HttpTrait;
 
 /**
- * Sends messages to wall
+ * Class PostSender
  *
- * @license MIT
  * @package Subb98\VkPublisher
+ * @license MIT
  */
 class PostSender implements PostSenderInterface
 {
+    const POST_URL = 'https://api.vk.com/method/wall.post?';
+
     use HttpTrait;
 
-    /** @var SettingsInterface */
+    /**
+     * @var SettingsInterface
+     */
     private $settings;
 
     /**
-     * Creates a new PostSender instance
-     *
-     * @param SettingsInterface $settings
+     * @inheritDoc
      */
     public function __construct(SettingsInterface $settings)
     {
@@ -30,12 +32,8 @@ class PostSender implements PostSenderInterface
     }
 
     /**
-     * Sends message to wall
-     *
-     * @param string $message Message that will be sent to the wall
-     * @param array $attachments Photos that will be post on the wall
+     * @inheritDoc
      * @throws \InvalidArgumentException if $message and $attachments are empty
-     * @return int
      */
     public function sendPostToWall(string $message, array $attachments = []): int
     {
@@ -56,7 +54,7 @@ class PostSender implements PostSenderInterface
             $params['attachments'] = $attachments;
         }
 
-        $response = $this->httpRequest('https://api.vk.com/method/wall.post?', $params);
+        $response = $this->httpRequest(self::POST_URL, $params);
 
         return $response['response']['post_id'];
     }

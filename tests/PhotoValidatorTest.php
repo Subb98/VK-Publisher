@@ -6,22 +6,40 @@ namespace Subb98\VkPublisher\Tests;
 use PHPUnit\Framework\TestCase;
 use Subb98\VkPublisher\PhotoValidator;
 
+/**
+ * Class PhotoValidatorTest
+ *
+ * @package Subb98\VkPublisher\Tests
+ * @license MIT
+ */
 class PhotoValidatorTest extends TestCase
 {
     const IMG_PATH = __DIR__ . '/fixtures/img';
 
+    /**
+     * @var PhotoValidator
+     */
     private $photoValidator;
 
+    /**
+     * @inheritDoc
+     */
     public function setUp()
     {
-        $this->photoValidator = new PhotoValidator;
+        $this->photoValidator = new PhotoValidator();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function tearDown()
     {
         $this->photoValidator = null;
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function setUpBeforeClass()
     {
         $file = fopen(self::IMG_PATH . '/invalid-file-size.jpg', 'w');
@@ -30,6 +48,9 @@ class PhotoValidatorTest extends TestCase
         fclose($file);
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function tearDownAfterClass()
     {
         unlink(self::IMG_PATH . '/invalid-file-size.jpg');

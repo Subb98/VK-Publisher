@@ -5,29 +5,35 @@ namespace Subb98\VkPublisher;
 use Subb98\VkPublisher\Interfaces\SettingsInterface;
 
 /**
- * Manages settings
+ * Class Settings
  *
- * @license MIT
  * @package Subb98\VkPublisher
+ * @license MIT
  */
 class Settings implements SettingsInterface
 {
-    /** @var int Community index */
+    /**
+     * @var int Community index
+     */
     private $groupId;
 
-    /** @var int Photo album index */
+    /**
+     * @var int Photo album index
+     */
     private $albumId;
 
-    /** @var string User access token */
+    /**
+     * @var  string User access token
+     */
     private $accessToken;
 
-    /** @var string Version of VKontakte API */
+    /**
+     * @var  string Version of VKontakte API
+     */
     private $apiVersion;
 
     /**
-     * Gets the value of groupId
-     *
-     * @return integer|null
+     * @inheritDoc
      */
     public function getGroupId(): ?int
     {
@@ -35,10 +41,7 @@ class Settings implements SettingsInterface
     }
 
     /**
-     * Sets the value of groupId
-     *
-     * @param integer $groupId Community index
-     * @return self
+     * @inheritDoc
      */
     public function setGroupId(int $groupId): self
     {
@@ -47,9 +50,7 @@ class Settings implements SettingsInterface
     }
 
     /**
-     * Gets the value of albumId
-     *
-     * @return integer|null
+     * @inheritDoc
      */
     public function getAlbumId(): ?int
     {
@@ -57,10 +58,7 @@ class Settings implements SettingsInterface
     }
 
     /**
-     * Sets the value of albumId
-     *
-     * @param integer $albumId Photo album index
-     * @return self
+     * @inheritDoc
      */
     public function setAlbumId(int $albumId): self
     {
@@ -69,9 +67,7 @@ class Settings implements SettingsInterface
     }
 
     /**
-     * Gets the value of accessToken
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getAccessToken(): ?string
     {
@@ -79,10 +75,7 @@ class Settings implements SettingsInterface
     }
 
     /**
-     * Sets the value of accessToken
-     *
-     * @param string $accessToken User access token
-     * @return self
+     * @inheritDoc
      */
     public function setAccessToken(string $accessToken): self
     {
@@ -91,9 +84,7 @@ class Settings implements SettingsInterface
     }
 
     /**
-     * Gets the value of apiVersion
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getApiVersion(): ?string
     {
@@ -101,10 +92,7 @@ class Settings implements SettingsInterface
     }
 
     /**
-     * Sets the value of apiVersion
-     *
-     * @param string $apiVersion Version of VKontakte API
-     * @return self
+     * @inheritDoc
      */
     public function setApiVersion(string $apiVersion): self
     {

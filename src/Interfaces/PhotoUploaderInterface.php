@@ -2,13 +2,16 @@
 
 namespace Subb98\VkPublisher\Interfaces;
 
-use Subb98\VkPublisher\Interfaces\SettingsInterface;
-use Subb98\VkPublisher\Interfaces\PhotoValidatorInterface;
-
+/**
+ * Interface PhotoUploaderInterface
+ *
+ * @package Subb98\VkPublisher\Interfaces
+ * @license MIT
+ */
 interface PhotoUploaderInterface
 {
     /**
-     * Creates a new PhotoUploader instance
+     * PhotoUploaderInterface constructor.
      *
      * @param SettingsInterface $settings
      * @param PhotoValidatorInterface $photoValidator

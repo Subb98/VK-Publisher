@@ -2,12 +2,16 @@
 
 namespace Subb98\VkPublisher\Interfaces;
 
-use Subb98\VkPublisher\Interfaces\SettingsInterface;
-
+/**
+ * Interface PostSenderInterface
+ *
+ * @package Subb98\VkPublisher\Interfaces
+ * @license MIT
+ */
 interface PostSenderInterface
 {
     /**
-     * Creates a new PostSender instance
+     * PostSenderInterface constructor.
      *
      * @param SettingsInterface $settings
      */
@@ -18,7 +22,6 @@ interface PostSenderInterface
      *
      * @param string $message Message that will be sent to the wall
      * @param array $attachments Photos that will be post on the wall
-     * @throws \InvalidArgumentException if $message and $attachments are empty
      * @return int
      */
     public function sendPostToWall(string $message, array $attachments = []): int;

@@ -2,19 +2,25 @@
 
 namespace Subb98\VkPublisher\Interfaces;
 
+/**
+ * Interface SettingsInterface
+ *
+ * @package Subb98\VkPublisher\Interfaces
+ * @license MIT
+ */
 interface SettingsInterface
 {
     /**
      * Gets the value of groupId
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getGroupId(): ?int;
 
     /**
      * Sets the value of groupId
      *
-     * @param integer $groupId Community index
+     * @param int $groupId Community index
      * @return self
      */
     public function setGroupId(int $groupId);
@@ -22,14 +28,14 @@ interface SettingsInterface
     /**
      * Gets the value of albumId
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getAlbumId(): ?int;
 
     /**
      * Sets the value of albumId
      *
-     * @param integer $albumId Photo album index
+     * @param int $albumId Photo album index
      * @return self
      */
     public function setAlbumId(int $albumId);

@@ -8,26 +8,30 @@ use Subb98\VkPublisher\Interfaces\PhotoUploaderInterface;
 use Subb98\VkPublisher\Traits\HttpTrait;
 
 /**
- * Uploads photos
+ * Class PhotoUploader
  *
- * @license MIT
  * @package Subb98\VkPublisher
+ * @license MIT
  */
 class PhotoUploader implements PhotoUploaderInterface
 {
+    const GET_UPLOAD_SERVER_URL = 'https://api.vk.com/method/photos.getUploadServer?';
+    const SAVE_URL = 'https://api.vk.com/method/photos.save?';
+
     use HttpTrait;
 
-    /** @var SettingsInterface */
+    /**
+     * @var SettingsInterface
+     */
     private $settings;
 
-    /** @var PhotoValidatorInterface */
+    /**
+     * @var PhotoValidatorInterface
+     */
     private $photoValidator;
 
     /**
-     * Creates a new PhotoUploader instance
-     *
-     * @param SettingsInterface $settings
-     * @param PhotoValidatorInterface $photoValidator
+     * @inheritDoc
      */
     public function __construct(SettingsInterface $settings, PhotoValidatorInterface $photoValidator)
     {
@@ -36,16 +40,13 @@ class PhotoUploader implements PhotoUploaderInterface
     }
 
     /**
-     * Uploads photo to album
-     *
-     * @param string $pathToPhoto Absolute path to photo
-     * @return string
+     * @inheritDoc
      */
     public function uploadPhotoToAlbum(string $pathToPhoto): string
     {
         $this->photoValidator->validate($pathToPhoto);
 
-        $response = $this->httpRequest('https://api.vk.com/method/photos.getUploadServer?', [
+        $response = $this->httpRequest(self::GET_UPLOAD_SERVER_URL, [
             'album_id'      => $this->settings->getAlbumId(),
             'group_id'      => $this->settings->getGroupId(),
             'access_token'  => $this->settings->getAccessToken(),
@@ -56,7 +57,7 @@ class PhotoUploader implements PhotoUploaderInterface
             'file1' => new \CURLFile($pathToPhoto),
         ]);
 
-        $response = $this->httpRequest('https://api.vk.com/method/photos.save?', [
+        $response = $this->httpRequest(self::SAVE_URL, [
             'server'        => $response['server'],
             'photos_list'   => $response['photos_list'],
             'group_id'      => $response['gid'],

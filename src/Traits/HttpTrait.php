@@ -2,6 +2,12 @@
 
 namespace Subb98\VkPublisher\Traits;
 
+/**
+ * Trait HttpTrait
+ *
+ * @package Subb98\VkPublisher\Traits
+ * @license MIT
+ */
 trait HttpTrait
 {
     /**
@@ -47,7 +53,7 @@ trait HttpTrait
     /**
      * Gets cURL response
      *
-     * @param \resource $ch
+     * @param resource $ch
      * @throws \InvalidArgumentException if $ch param is not a resource
      * @throws \RuntimeException if request failed
      * @return array
