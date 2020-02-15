@@ -1,51 +1,50 @@
 <?php
 
-namespace Subb98\VkPublisher;
+namespace Subb98\VkPublisher\Models;
 
 use Subb98\VkPublisher\Interfaces\SettingsInterface;
 
 /**
  * Class Settings
  *
- * @package Subb98\VkPublisher
- * @license MIT
+ * @package Subb98\VkPublisher\Models
  */
 class Settings implements SettingsInterface
 {
     /**
-     * @var int Community index
+     * @var int Community or user id
      */
-    private $groupId;
+    protected $ownerId;
 
     /**
-     * @var int Photo album index
+     * @var int Photo album id
      */
-    private $albumId;
+    protected $albumId;
 
     /**
      * @var  string User access token
      */
-    private $accessToken;
+    protected $accessToken;
 
     /**
      * @var  string Version of VKontakte API
      */
-    private $apiVersion;
+    protected $apiVersion;
 
     /**
      * @inheritDoc
      */
-    public function getGroupId(): ?int
+    public function getOwnerId(): ?int
     {
-        return $this->groupId;
+        return $this->ownerId;
     }
 
     /**
      * @inheritDoc
      */
-    public function setGroupId(int $groupId): self
+    public function setOwnerId(int $ownerId): SettingsInterface
     {
-        $this->groupId = $groupId;
+        $this->ownerId = $ownerId;
         return $this;
     }
 
@@ -60,7 +59,7 @@ class Settings implements SettingsInterface
     /**
      * @inheritDoc
      */
-    public function setAlbumId(int $albumId): self
+    public function setAlbumId(int $albumId): SettingsInterface
     {
         $this->albumId = $albumId;
         return $this;
@@ -77,7 +76,7 @@ class Settings implements SettingsInterface
     /**
      * @inheritDoc
      */
-    public function setAccessToken(string $accessToken): self
+    public function setAccessToken(string $accessToken): SettingsInterface
     {
         $this->accessToken = $accessToken;
         return $this;
@@ -94,7 +93,7 @@ class Settings implements SettingsInterface
     /**
      * @inheritDoc
      */
-    public function setApiVersion(string $apiVersion): self
+    public function setApiVersion(string $apiVersion): SettingsInterface
     {
         $this->apiVersion = $apiVersion;
         return $this;

@@ -6,7 +6,6 @@ namespace Subb98\VkPublisher\Interfaces;
  * Interface PhotoUploaderInterface
  *
  * @package Subb98\VkPublisher\Interfaces
- * @license MIT
  */
 interface PhotoUploaderInterface
 {
@@ -14,12 +13,11 @@ interface PhotoUploaderInterface
      * PhotoUploaderInterface constructor.
      *
      * @param SettingsInterface $settings
-     * @param PhotoValidatorInterface $photoValidator
      */
-    public function __construct(SettingsInterface $settings, PhotoValidatorInterface $photoValidator);
+    public function __construct(SettingsInterface $settings);
 
     /**
-     * Uploads photo to album
+     * Uploads photo to album.
      *
      * @param string $pathToPhoto Absolute path to photo
      * @return string

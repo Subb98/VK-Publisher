@@ -1,28 +1,26 @@
 <?php
 
-namespace Subb98\VkPublisher\Traits;
+namespace Subb98\VkPublisher\Http;
+
+use InvalidArgumentException;
+use RuntimeException;
+use Subb98\VkPublisher\Interfaces\HttpClientInterface;
 
 /**
- * Trait HttpTrait
+ * Class HttpClient
  *
- * @package Subb98\VkPublisher\Traits
- * @license MIT
+ * @package Subb98\VkPublisher\Http
  */
-trait HttpTrait
+class HttpClient implements HttpClientInterface
 {
     /**
-     * Sends HTTP request
-     *
-     * @param string $url URL
-     * @param array $params Request parameters (CURLOPT_POSTFIELDS)
-     * @param array $curlOptions cURL options (CURLOPT_* array)
-     * @throws \InvalidArgumentException if $url param is not a valid URL
-     * @return array
+     * {@inheritDoc}
+     * @throws InvalidArgumentException if $url param is not a valid URL
      */
-    protected function httpRequest(string $url, array $params = [], array $curlOptions = []): array
+    public static function sendRequest(string $url, array $params = [], array $curlOptions = []): array
     {
         if (filter_var($url, FILTER_VALIDATE_URL) === false) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('Argument "$url" must be a valid URL. "%s" given.', $url)
             );
         }
@@ -42,26 +40,26 @@ trait HttpTrait
         }
 
         curl_setopt_array($ch, $curlOptions);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 
-        $response = $this->getResponse($ch);
+        if ($params) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        }
+
+        $response = static::getResponse($ch);
         curl_close($ch);
 
         return $response;
     }
 
     /**
-     * Gets cURL response
-     *
-     * @param resource $ch
-     * @throws \InvalidArgumentException if $ch param is not a resource
-     * @throws \RuntimeException if request failed
-     * @return array
+     * {@inheritDoc}
+     * @throws InvalidArgumentException if $ch param is not a resource
+     * @throws RuntimeException if request failed
      */
-    protected function getResponse($ch): array
+    public static function getResponse($ch): array
     {
         if (!is_resource($ch)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('Argument "$ch" must be a valid resource type. %s given.', gettype($ch))
             );
         }
@@ -69,13 +67,13 @@ trait HttpTrait
         $response = curl_exec($ch);
 
         if (!$response) {
-            throw new \RuntimeException('Request failed');
+            throw new RuntimeException('Request failed');
         }
 
         $response = json_decode($response, true);
 
         if (isset($response['error'])) {
-            throw new \RuntimeException("Error {$response['error']['error_code']}: {$response['error']['error_msg']}");
+            throw new RuntimeException("Error {$response['error']['error_code']}: {$response['error']['error_msg']}");
         }
 
         return $response;

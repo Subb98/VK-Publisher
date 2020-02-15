@@ -6,24 +6,23 @@ namespace Subb98\VkPublisher\Interfaces;
  * Interface SettingsInterface
  *
  * @package Subb98\VkPublisher\Interfaces
- * @license MIT
  */
 interface SettingsInterface
 {
     /**
-     * Gets the value of groupId
+     * Gets the value of ownerId
      *
      * @return int|null
      */
-    public function getGroupId(): ?int;
+    public function getOwnerId(): ?int;
 
     /**
-     * Sets the value of groupId
+     * Sets the value of ownerId
      *
-     * @param int $groupId Community index
-     * @return self
+     * @param int $ownerId Community or user id
+     * @return $this
      */
-    public function setGroupId(int $groupId);
+    public function setOwnerId(int $ownerId): self;
 
     /**
      * Gets the value of albumId
@@ -35,10 +34,10 @@ interface SettingsInterface
     /**
      * Sets the value of albumId
      *
-     * @param int $albumId Photo album index
-     * @return self
+     * @param int $albumId Photo album id
+     * @return $this
      */
-    public function setAlbumId(int $albumId);
+    public function setAlbumId(int $albumId): self;
 
     /**
      * Gets the value of accessToken
@@ -51,9 +50,9 @@ interface SettingsInterface
      * Sets the value of accessToken
      *
      * @param string $accessToken User access token
-     * @return self
+     * @return $this
      */
-    public function setAccessToken(string $accessToken);
+    public function setAccessToken(string $accessToken): self;
 
     /**
      * Gets the value of apiVersion
@@ -66,7 +65,7 @@ interface SettingsInterface
      * Sets the value of apiVersion
      *
      * @param string $apiVersion Version of VKontakte API
-     * @return self
+     * @return $this
      */
-    public function setApiVersion(string $apiVersion);
+    public function setApiVersion(string $apiVersion): self;
 }

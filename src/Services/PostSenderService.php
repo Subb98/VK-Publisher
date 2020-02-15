@@ -1,27 +1,33 @@
 <?php
 
-namespace Subb98\VkPublisher;
+namespace Subb98\VkPublisher\Services;
 
-use Subb98\VkPublisher\Interfaces\SettingsInterface;
+use InvalidArgumentException;
+use Subb98\VkPublisher\Interfaces\HttpClientInterface;
 use Subb98\VkPublisher\Interfaces\PostSenderInterface;
-use Subb98\VkPublisher\Traits\HttpTrait;
+use Subb98\VkPublisher\Interfaces\SettingsInterface;
 
 /**
- * Class PostSender
+ * Class PostSenderService
  *
- * @package Subb98\VkPublisher
- * @license MIT
+ * @package Subb98\VkPublisher\Services
  */
-class PostSender implements PostSenderInterface
+class PostSenderService implements PostSenderInterface
 {
+    /**
+     * Resource to send a message.
+     */
     const POST_URL = 'https://api.vk.com/method/wall.post?';
 
-    use HttpTrait;
+    /**
+     * @var HttpClientInterface
+     */
+    public $httpClient = 'Subb98\VkPublisher\Http\HttpClient';
 
     /**
      * @var SettingsInterface
      */
-    private $settings;
+    protected $settings;
 
     /**
      * @inheritDoc
@@ -32,17 +38,17 @@ class PostSender implements PostSenderInterface
     }
 
     /**
-     * @inheritDoc
-     * @throws \InvalidArgumentException if $message and $attachments are empty
+     * {@inheritDoc}
+     * @throws InvalidArgumentException if $message and $attachments are empty
      */
     public function sendPostToWall(string $message, array $attachments = []): int
     {
         if (trim($message) === '' && empty($attachments)) {
-            throw new \InvalidArgumentException('Argument "$message" or "$attachments" should not be empty.');
+            throw new InvalidArgumentException('Argument "$message" or "$attachments" should not be empty.');
         }
 
         $params = [
-            'owner_id'      => '-'.$this->settings->getGroupId(),
+            'owner_id'      => $this->settings->getOwnerId(),
             'from_group'    => 1,
             'message'       => $message,
             'access_token'  => $this->settings->getAccessToken(),
@@ -54,7 +60,7 @@ class PostSender implements PostSenderInterface
             $params['attachments'] = $attachments;
         }
 
-        $response = $this->httpRequest(self::POST_URL, $params);
+        $response = $this->httpClient::sendRequest(static::POST_URL, $params);
 
         return $response['response']['post_id'];
     }
