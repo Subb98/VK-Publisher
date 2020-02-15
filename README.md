@@ -28,9 +28,16 @@ composer require subb98/vk-publisher
 
 ## Usage
 ### Getting access_token
+#### For one step
+
+1. Getting access_token
+    - Request example: `https://oauth.vk.com/authorize?client_id=1234567&display=page&redirect_uri=&scope=photos,wall,groups,offline&response_type=token&v=5.103`
+    - Response example: `https://oauth.vk.com/blank.html#access_token=fe8c3650bdf7ad7185598c5a32c43a4e8d38bf1135e7d7920fdafd5dc5615949ba3fc7b461d6fd120b97f&expires_in=0&user_id=89012345`
+
+#### Or for two steps
 
 1. Getting the code to get access_token
-    - Request example: `https://oauth.vk.com/authorize?client_id=1234567&display=page&redirect_uri=&scope=photos,wall,groups,offline&response_type=code&v=5.92`
+    - Request example: `https://oauth.vk.com/authorize?client_id=1234567&display=page&redirect_uri=&scope=photos,wall,groups,offline&response_type=code&v=5.103`
     - Response example: `https://oauth.vk.com/blank.html#code=3b2a554d20bd48c360`
 
 2. Getting access_token
@@ -43,27 +50,26 @@ See more: [Getting access token](https://vk.com/dev/authcode_flow_user)
 ### Sending a message to the wall
 
 ```
-use Subb98\VkPublisher\Settings;
-use Subb98\VkPublisher\PostSender;
+use Subb98\VkPublisher\Models\Settings;
+use Subb98\VkPublisher\Services\PostSenderService;
 
-$settings = new Settings;
-$settings->setGroupId(169116756);
-$settings->setAccessToken('fe8c3650bdf7ad7185598c5a32c43a4e8d38bf1135e7d7920fdafd5dc5615949ba3fc7b461d6fd120b97f');
-$settings->setApiVersion('5.92');
+$settings = (new Settings())
+    ->setOwnerId(-169116756) // you need a minus sign if it's a group
+    ->setAccessToken('fe8c3650bdf7ad7185598c5a32c43a4e8d38bf1135e7d7920fdafd5dc5615949ba3fc7b461d6fd120b97f')
+    ->setApiVersion('5.103');
 
-$postSender = new PostSender($settings);
+$postSender = new PostSenderService($settings);
 $postSender->sendPostToWall('Message sends by "VK Publisher" PHP library');
 ```
 
-### Whith photo
+### With photo
 
 ```
-use Subb98\VkPublisher\PhotoValidator;
-use Subb98\VkPublisher\PhotoUploader;
+use Subb98\VkPublisher\Services\PhotoUploaderService;
 
 $settings->setAlbumId(256572563);
 
-$photoUploader = new PhotoUploader($settings, new PhotoValidator);
+$photoUploader = new PhotoUploaderService($settings);
 
 $photoUri = $photoUploader->uploadPhotoToAlbum(__DIR__ . '/img/peter-as-superman.jpg');
 $postSender->sendPostToWall('Message sends by "VK Publisher" PHP library', [$photoUri]);
