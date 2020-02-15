@@ -60,7 +60,7 @@ class PostSenderService implements PostSenderInterface
             $params['attachments'] = $attachments;
         }
 
-        $response = $this->httpClient::sendRequest(self::POST_URL, $params);
+        $response = $this->httpClient::sendRequest(static::POST_URL, $params);
 
         return $response['response']['post_id'];
     }

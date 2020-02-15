@@ -54,9 +54,9 @@ class PhotoUploaderService implements PhotoUploaderInterface
     {
         $this->photoValidator::validate($pathToPhoto);
 
-        $response = $this->httpClient::sendRequest(self::GET_UPLOAD_SERVER_URL, [
+        $response = $this->httpClient::sendRequest(static::GET_UPLOAD_SERVER_URL, [
             'album_id'      => $this->settings->getAlbumId(),
-            'group_id'      => $this->settings->getOwnerId(),
+            'group_id'      => abs($this->settings->getOwnerId()),
             'access_token'  => $this->settings->getAccessToken(),
             'v'             => $this->settings->getApiVersion(),
         ]);
@@ -65,7 +65,7 @@ class PhotoUploaderService implements PhotoUploaderInterface
             'file1' => new \CURLFile($pathToPhoto),
         ]);
 
-        $response = $this->httpClient::sendRequest(self::SAVE_URL, [
+        $response = $this->httpClient::sendRequest(static::SAVE_URL, [
             'server'        => $response['server'],
             'photos_list'   => $response['photos_list'],
             'group_id'      => $response['gid'],
