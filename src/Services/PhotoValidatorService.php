@@ -19,7 +19,7 @@ class PhotoValidatorService implements PhotoValidatorInterface
     const MAX_FILE_SIZE = 50;
 
     /**
-     * Number of bytes in megabytes (1024 bytes * 1024 kB).
+     * Number of bytes in megabyte (1024 bytes * 1024 kB).
      */
     const BYTES_IM_MEGABYTE = 1048576;
 
