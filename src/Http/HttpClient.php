@@ -40,7 +40,10 @@ class HttpClient implements HttpClientInterface
         }
 
         curl_setopt_array($ch, $curlOptions);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $params); // TODO: точно ли это POST запрос?
+
+        if ($params) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        }
 
         $response = static::getResponse($ch);
         curl_close($ch);

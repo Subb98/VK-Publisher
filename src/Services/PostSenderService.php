@@ -49,7 +49,7 @@ class PostSenderService implements PostSenderInterface
 
         $params = [
             'owner_id'      => $this->settings->getOwnerId(),
-            'from_group'    => 1, // TODO: вынести в параметры метода
+            'from_group'    => 1,
             'message'       => $message,
             'access_token'  => $this->settings->getAccessToken(),
             'v'             => $this->settings->getApiVersion(),
