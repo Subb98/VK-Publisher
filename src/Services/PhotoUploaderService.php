@@ -1,42 +1,50 @@
 <?php
 
-namespace Subb98\VkPublisher;
+namespace Subb98\VkPublisher\Services;
 
-use Subb98\VkPublisher\Interfaces\SettingsInterface;
-use Subb98\VkPublisher\Interfaces\PhotoValidatorInterface;
+use Subb98\VkPublisher\Interfaces\HttpClientInterface;
 use Subb98\VkPublisher\Interfaces\PhotoUploaderInterface;
-use Subb98\VkPublisher\Traits\HttpTrait;
+use Subb98\VkPublisher\Interfaces\PhotoValidatorInterface;
+use Subb98\VkPublisher\Interfaces\SettingsInterface;
 
 /**
- * Class PhotoUploader
+ * Class PhotoUploaderService
  *
- * @package Subb98\VkPublisher
- * @license MIT
+ * @package Subb98\VkPublisher\Services
  */
-class PhotoUploader implements PhotoUploaderInterface
+class PhotoUploaderService implements PhotoUploaderInterface
 {
+    /**
+     * Resource for retrieving upload URL.
+     */
     const GET_UPLOAD_SERVER_URL = 'https://api.vk.com/method/photos.getUploadServer?';
-    const SAVE_URL = 'https://api.vk.com/method/photos.save?';
-
-    use HttpTrait;
 
     /**
-     * @var SettingsInterface
+     * Resource for saving photo.
      */
-    private $settings;
+    const SAVE_URL = 'https://api.vk.com/method/photos.save?';
+
+    /**
+     * @var HttpClientInterface
+     */
+    public $httpClient = 'Subb98\VkPublisher\Http\HttpClient';
 
     /**
      * @var PhotoValidatorInterface
      */
-    private $photoValidator;
+    public $photoValidator = 'Subb98\VkPublisher\Services\PhotoValidatorService';
+
+    /**
+     * @var SettingsInterface
+     */
+    protected $settings;
 
     /**
      * @inheritDoc
      */
-    public function __construct(SettingsInterface $settings, PhotoValidatorInterface $photoValidator)
+    public function __construct(SettingsInterface $settings)
     {
         $this->settings = $settings;
-        $this->photoValidator = $photoValidator;
     }
 
     /**
@@ -44,20 +52,20 @@ class PhotoUploader implements PhotoUploaderInterface
      */
     public function uploadPhotoToAlbum(string $pathToPhoto): string
     {
-        $this->photoValidator->validate($pathToPhoto);
+        $this->photoValidator::validate($pathToPhoto);
 
-        $response = $this->httpRequest(self::GET_UPLOAD_SERVER_URL, [
+        $response = $this->httpClient::sendRequest(self::GET_UPLOAD_SERVER_URL, [
             'album_id'      => $this->settings->getAlbumId(),
-            'group_id'      => $this->settings->getGroupId(),
+            'group_id'      => $this->settings->getOwnerId(),
             'access_token'  => $this->settings->getAccessToken(),
             'v'             => $this->settings->getApiVersion(),
         ]);
 
-        $response = $this->httpRequest($response['response']['upload_url'], [
+        $response = $this->httpClient::sendRequest($response['response']['upload_url'], [
             'file1' => new \CURLFile($pathToPhoto),
         ]);
 
-        $response = $this->httpRequest(self::SAVE_URL, [
+        $response = $this->httpClient::sendRequest(self::SAVE_URL, [
             'server'        => $response['server'],
             'photos_list'   => $response['photos_list'],
             'group_id'      => $response['gid'],
