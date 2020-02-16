@@ -8,11 +8,11 @@ PHP library for auto-sending (crossposting) messages to VKontakte wall
 [![Latest Unstable Version](https://poser.pugx.org/subb98/vk-publisher/v/unstable)](https://packagist.org/packages/subb98/vk-publisher)
 [![License](https://poser.pugx.org/subb98/vk-publisher/license)](https://packagist.org/packages/subb98/vk-publisher)
 
-![](https://i.imgur.com/HE1Lq53.png)
+![](https://i.imgur.com/m5wIRKh.png)
 
 ## Features
 - Send a message or attachment (or all together) to the wall
-- Upload photo to album
+- Upload photo (external or local) to album
 
 ## Requirements
 
@@ -48,6 +48,7 @@ Note: don't use `scope=offline` if you fear access_token is may be compromised.
 See more: [Getting access token](https://vk.com/dev/authcode_flow_user)
 
 ### Sending a message to the wall
+#### Without photo
 
 ```
 use Subb98\VkPublisher\Models\Settings;
@@ -59,10 +60,10 @@ $settings = (new Settings())
     ->setApiVersion('5.103');
 
 $postSender = new PostSenderService($settings);
-$postSender->sendPostToWall('Message sends by "VK Publisher" PHP library');
+$postSender->sendPostToWall("Message sends by \"VK Publisher\" PHP library\n\nLorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur unde libero quidem adipisci fugiat, error facilis ducimus, veritatis id amet nemo. Mollitia corporis vel quae rerum deleniti! Ducimus, corporis optio.");
 ```
 
-### With photo
+#### With photo(s)
 
 ```
 use Subb98\VkPublisher\Services\PhotoUploaderService;
@@ -71,8 +72,9 @@ $settings->setAlbumId(256572563);
 
 $photoUploader = new PhotoUploaderService($settings);
 
-$photoUri = $photoUploader->uploadPhotoToAlbum(__DIR__ . '/img/peter-as-superman.jpg');
-$postSender->sendPostToWall('Message sends by "VK Publisher" PHP library', [$photoUri]);
+$photos[] = $photoUploader->uploadPhotoToAlbum('https://i.imgur.com/G82OZCz.jpg');
+$photos[] = $photoUploader->uploadPhotoToAlbum(__DIR__ . '/img/peter-as-superman.jpg');
+$postSender->sendPostToWall("Message sends by \"VK Publisher\" PHP library\n\nLorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur unde libero quidem adipisci fugiat, error facilis ducimus, veritatis id amet nemo. Mollitia corporis vel quae rerum deleniti! Ducimus, corporis optio.", $photos);
 ```
 
 ## License

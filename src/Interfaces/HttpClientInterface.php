@@ -23,7 +23,8 @@ interface HttpClientInterface
      * Gets cURL response.
      *
      * @param resource $ch cURL handler
+     * @param bool $returnRaw Return raw response
      * @return array
      */
-    public static function getResponse($ch): array;
+    public static function getResponse($ch, bool $returnRaw = false): array;
 }

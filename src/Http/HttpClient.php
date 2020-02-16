@@ -45,7 +45,13 @@ class HttpClient implements HttpClientInterface
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         }
 
-        $response = static::getResponse($ch);
+        $returnRaw = false;
+
+        if (isset($curlOptions[CURLOPT_BINARYTRANSFER]) && (bool)$curlOptions[CURLOPT_BINARYTRANSFER] === true) {
+            $returnRaw = true;
+        }
+
+        $response = static::getResponse($ch, $returnRaw);
         curl_close($ch);
 
         return $response;
@@ -56,7 +62,7 @@ class HttpClient implements HttpClientInterface
      * @throws InvalidArgumentException if $ch param is not a resource
      * @throws RuntimeException if request failed
      */
-    public static function getResponse($ch): array
+    public static function getResponse($ch, bool $returnRaw = false): array
     {
         if (!is_resource($ch)) {
             throw new InvalidArgumentException(
@@ -68,6 +74,10 @@ class HttpClient implements HttpClientInterface
 
         if (!$response) {
             throw new RuntimeException('Request failed');
+        }
+
+        if ($returnRaw) {
+            return [$response];
         }
 
         $response = json_decode($response, true);

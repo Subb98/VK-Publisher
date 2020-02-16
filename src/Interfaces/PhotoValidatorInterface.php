@@ -16,4 +16,12 @@ interface PhotoValidatorInterface
      * @return void
      */
     public static function validate(string $pathToPhoto): void;
+
+    /**
+     * Checks if an extension is available.
+     *
+     * @param string $fileExtension
+     * @return bool
+     */
+    public static function isAllowedExtension(string $fileExtension): bool;
 }
