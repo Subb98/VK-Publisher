@@ -61,7 +61,7 @@ class PhotoValidatorService implements PhotoValidatorInterface
         $fileParts = pathinfo($pathToPhoto);
         $fileExtension = strtolower($fileParts['extension']);
 
-        if (!in_array($fileExtension, static::ALLOWED_EXTENSIONS, true)) {
+        if (!static::isAllowedExtension($fileExtension)) {
             throw new RuntimeException("Invalid file extension: $fileExtension");
         }
 
@@ -85,5 +85,13 @@ class PhotoValidatorService implements PhotoValidatorInterface
             throw new RuntimeException("Invalid width to height ratio: 1:$ratio, need less than or equal to 1:"
                 . static::MAX_WIDTH_HEIGHT_RATIO . " $pathToPhoto");
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function isAllowedExtension(string $fileExtension): bool
+    {
+        return in_array($fileExtension, static::ALLOWED_EXTENSIONS, true);
     }
 }
