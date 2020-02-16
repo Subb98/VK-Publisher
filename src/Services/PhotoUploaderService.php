@@ -3,6 +3,7 @@
 namespace Subb98\VkPublisher\Services;
 
 use Subb98\VkPublisher\Interfaces\HttpClientInterface;
+use Subb98\VkPublisher\Interfaces\PhotoDownloaderInterface;
 use Subb98\VkPublisher\Interfaces\PhotoUploaderInterface;
 use Subb98\VkPublisher\Interfaces\PhotoValidatorInterface;
 use Subb98\VkPublisher\Interfaces\SettingsInterface;
@@ -30,6 +31,11 @@ class PhotoUploaderService implements PhotoUploaderInterface
     public $httpClient = 'Subb98\VkPublisher\Http\HttpClient';
 
     /**
+     * @var PhotoDownloaderInterface
+     */
+    public $photoDownloader = 'Subb98\VkPublisher\Services\PhotoDownloaderService';
+
+    /**
      * @var PhotoValidatorInterface
      */
     public $photoValidator = 'Subb98\VkPublisher\Services\PhotoValidatorService';
@@ -52,6 +58,16 @@ class PhotoUploaderService implements PhotoUploaderInterface
      */
     public function uploadPhotoToAlbum(string $pathToPhoto): string
     {
+        $sourcePathToPhoto = $pathToPhoto;
+        $fileParts = pathinfo($pathToPhoto);
+
+        if (
+            $this->photoDownloader::isExternalPhoto($pathToPhoto)
+            && $this->photoValidator::isAllowedExtension($fileParts['extension'])
+        ) {
+            $pathToPhoto = $this->photoDownloader::downloadPhoto($pathToPhoto);
+        }
+
         $this->photoValidator::validate($pathToPhoto);
 
         $response = $this->httpClient::sendRequest(static::GET_UPLOAD_SERVER_URL, [
@@ -74,6 +90,8 @@ class PhotoUploaderService implements PhotoUploaderInterface
             'access_token'  => $this->settings->getAccessToken(),
             'v'             => $this->settings->getApiVersion(),
         ]);
+
+        $this->photoDownloader::deleteTmpPhoto($sourcePathToPhoto);
 
         return "photo{$response['response'][0]['owner_id']}_{$response['response'][0]['id']}";
     }
