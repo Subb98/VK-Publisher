@@ -15,5 +15,6 @@ $settings = (new Settings())
 $photoUploader = new PhotoUploaderService($settings);
 $postSender = new PostSenderService($settings);
 
-$photoUri = $photoUploader->uploadPhotoToAlbum(__DIR__ . '/img/peter-as-superman.jpg');
-$postSender->sendPostToWall('Message sends by "VK Publisher" PHP library', [$photoUri]);
+$photos[] = $photoUploader->uploadPhotoToAlbum('https://i.imgur.com/G82OZCz.jpg');
+$photos[] = $photoUploader->uploadPhotoToAlbum(__DIR__ . '/img/peter-as-superman.jpg');
+$postSender->sendPostToWall("Message sends by \"VK Publisher\" PHP library\n\nLorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur unde libero quidem adipisci fugiat, error facilis ducimus, veritatis id amet nemo. Mollitia corporis vel quae rerum deleniti! Ducimus, corporis optio.", $photos);
